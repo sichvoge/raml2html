@@ -1,3 +1,163 @@
+6.4.0 - July 16, 2017
+- Added a new --pretty command line option to turn off html minification
+
+6.3.0 - April 25, 2017
+- Added a new --validate command line option to turn on validation, which is now off by default (#345)
+
+6.2.0 - April 21, 2017
+- Fixed template path handling (#343)
+
+6.1.1 - April 14, 2017
+- Updated third party dependencies
+
+6.1.0 - March 24, 2017
+- Updated raml2obj dependency, also made it less strict
+
+6.0.0 - March 17, 2017
+- Updated from raml2obj 4.1.0 to 5.1.0, which has backwards incompatible changes to securedBy
+  (among other bug fixes)
+- Updated to raml2html-default-theme 2.0.0 to deal with these securedBy changes
+
+5.1.0 - March 9, 2017
+- All program arguments can now be passed on to themes, so themes can support their
+  own config options
+- Switched from using ESLint for code formatting to Prettier. We still use ESLint,
+  Prettier is run as a plugin through it. ESLint still checks for bugs.
+
+5.0.0 - February 14, 2017
+- Added support for themes:
+  - the command line interface now takes an optional `--theme` parameter
+  - we ship two officially supported themes: raml2html-default-theme and raml2html-markdown-theme
+  - themes can overwrite the entire rendering process, allowing themes to use different templating engines
+    or output formats (Markdown, PDF, etc)
+  - the `getDefaultConfig` function has been split into `getConfigForTemplate` and `getConfigForTheme`,
+    use `getConfigForTheme` without any parameters to get the old behaviour of `getDefaultConfig`
+
+4.1.1 - February 6, 2017
+- Improved error reporting (#316)
+
+4.1.0 - January 28, 2017
+- Render more information about examples (name, description) (#313)
+- Render more security scheme data (#310)
+- Updated raml2obj, which
+  - Updated raml-js-parser-2 dependancy
+  - Fixed types' parent overriding behaviour
+
+4.0.6 - January 23, 2017
+- Fixed template render error (#305)
+
+4.0.5 - January 9, 2017
+- Fix array examples (#302)
+
+4.0.4 - December 27, 2016
+- Put properties before example for item (#299)
+- Fix template variable reference that prevented type properties from rendering (#300)
+
+4.0.3 - December 12, 2016
+- Render item examples (#293)
+
+4.0.2 - December 8, 2016
+- Improve error output (#289)
+
+4.0.1 - December 8, 2016
+- Documentation fixes
+
+4.0.0 - December 1, 2016
+- We're releasing 4.0.0 with RAML 1 support. Please keep in mind that we no longer support RAML 0.8 files. For other changes please check the beta's below.
+
+4.0.0-beta18 - November 30, 2016
+- Updated raml2obj
+
+4.0.0-beta17 - November 23, 2016
+- Improved rendering of nested properties (#274)
+
+4.0.0-beta16 - November 22, 2016
+- Improved rendering of inherited array properties (#277)
+
+4.0.0-beta15 - November 21, 2016
+- Updated raml2obj
+- Fixed rendering of type array of primitives (like string[])
+
+4.0.0-beta14 - November 3, 2016
+- Fixed template render error (#272)
+
+4.0.0-beta13 - November 2, 2016
+- Updated raml2obj to 4.0.0-beta13, fixing type expansion in uriParameters (#271)
+
+4.0.0-beta12 - November 1, 2016
+- Improved array type support (#265)
+
+4.0.0-beta11 - November 1, 2016
+- Updated raml2obj to 4.0.0-beta11, solving problems with JSON datatypes
+
+4.0.0-beta10 - October 31, 2016
+- Updated raml2obj to 4.0.0-beta10
+
+4.0.0-beta9 - October 19, 2016
+- Deal with object datatypes
+
+4.0.0-beta8 - October 14, 2016
+- Updated raml2obj to 4.0.0-beta9, which deals with type inheritance
+
+4.0.0-beta7 - October 5, 2016
+- Rendering types
+
+4.0.0-beta6 - October 4, 2016
+- Using raml2obj 4.0.0-beta7
+
+4.0.0-beta5 - September 30, 2016
+- Fixed files list in package.json
+
+4.0.0-beta4 - September 29, 2016
+- Using raml2obj 4.0.0-beta6 which expands types and always gives consistent examples arrays
+- Rendering baseUriParameters
+- Rendering `properties` instead of `formParameters`
+- Rendering multiple `examples`
+- Improved rendering of single item enums
+- Very basic initial rendering of annotations on methods
+- Removed rendering of `types` for now
+
+4.0.0-beta3 - September 27, 2016
+- Allow Nunjucks config via a `config.setupNunjucks` function (#261)
+- Fixed securedBy usage in the templates
+- Added a full featured RAML 1.0 example file (world-music-api.raml)
+- Fixed examples/script.js
+
+4.0.0-beta2 - September 26, 2016
+- Using raml2obj 4.0.0-beta3
+- Fixed templates to use the changed output from raml2obj
+- Added a new basic example RAML file
+- Removed a bunch of old examples
+
+3.0.1 - September 16, 2016
+- Fixed a problem where the output would be truncated after 65536 characters (#259)
+
+4.0.0-beta1 - August 10, 2016
+- Using raml2obj 4.0.0-beta1, which adds support for RAML 1.0
+  (even though raml2html's template doesn't support that yet)
+
+3.0.0 - August 10, 2016
+- Released without further changes
+
+3.0.0-beta2 - August 8, 2016
+- Updated to raml2obj 3.0.0-beta2
+- Fixed rendering of the github.raml example file (#249)
+
+3.0.0-beta1 - August 7, 2016
+- Updated code to use ES6 syntax
+- Updated all dependencies
+- Breaking change: Node 4 or higher is now required
+- Breaking change: nunjucks-markdown 2.0.0 is a bit fuzzy with whitespace, please check
+  https://github.com/raml2html/raml2html/pull/231 for help with updating your custom templates.
+
+2.5.0 - August 4, 2016
+- Updated highlight.js to 9.3.0
+- Added support for securedBy scopes
+- Added syntax highlighting within modals
+- Improved item display of values false and 0
+- Improved multiple security schemes handling
+- Horizontally scroll overflowing code snippets
+
 2.4.0 - March 12, 2016
 - Downgraded Nunjucks back to 1.3.0 due to peer conflicts with nunjucks-markdown
   (which can't be upgraded because the newest version is broken)
@@ -36,7 +196,7 @@
 2.0.0 - May 22, 2015
 - Using a promise based API, please see README for updated usage example
 - Using Nunjucks by default, instead of Handlebars
-- Made it a lot easier to completely customize the entire rendering process, allowing you for example to use not only 
+- Made it a lot easier to completely customize the entire rendering process, allowing you for example to use not only
   custom templates but even a different template engine
 - Got rid of the -s / https option, all external sources are simply always loaded via https
 - Got rid of the -r and -m template options, as the resource- and item templates are now simply loaded from within

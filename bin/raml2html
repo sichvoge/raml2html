@@ -2,41 +2,79 @@
 
 'use strict';
 
-var program = require('commander');
-var fs = require('fs');
-var raml2html = require('..');
-var pjson = require('../package.json');
+const yargs = require('yargs');
+const fs = require('fs');
+const raml2html = require('..');
+const pjson = require('../package.json');
 
-program
+const argv = yargs
+  .usage('Usage: raml2html [options] [RAML input file]')
   .version(pjson.version)
-  .usage('[options] [RAML input file]')
-  .option('-i, --input [input]', 'RAML input file')
-  .option('-t, --template [template]', 'Filename of the custom Nunjucks template')
-  .option('-o, --output [output]', 'HTML output file')
-  .parse(process.argv);
+  .alias('i', 'input')
+  .alias('o', 'output')
+  .alias('t', 'template')
+  .alias('p', 'pretty')
+  .alias('v', 'validate')
+  .alias('h', 'help')
+  .help('h')
+  .string('i')
+  .string('o')
+  .string('t')
+  .string('theme')
+  .boolean('v')
+  .boolean('p')
+  .describe('i', 'Input file')
+  .describe('o', 'Output file')
+  .describe('t', 'Template path')
+  .describe('v', 'Validate RAML and examples (off by default)')
+  .describe('p', 'Make the output file pretty (readable)')
+  .describe('theme', 'Theme name')
+  .example('raml2html example.raml > example.html')
+  .example(
+    'raml2html --theme raml2html-markdown-theme example.raml > example.html'
+  )
+  .example(
+    'raml2html --template my-template.nunjucks -i example.raml -o example.html'
+  ).argv;
 
-var input = program.input;
+let input = argv.input;
 
 if (!input) {
-  if (program.args.length !== 1) {
-    console.error('Error: You need to specify the RAML input file');
-    program.help();
+  if (argv._.length !== 1) {
+    console.error('Error: You need to specify the RAML input file\n');
+    yargs.showHelp();
     process.exit(1);
   }
 
-  input = program.args[0];
+  input = argv._[0];
+}
+
+let config;
+if (argv.template) {
+  config = raml2html.getConfigForTemplate(argv.template);
+} else {
+  config = raml2html.getConfigForTheme(argv.theme, argv);
 }
 
 // Start the rendering process
-raml2html.render(input, raml2html.getDefaultConfig(program.template)).then(function(result) {
-  if (program.output) {
-    fs.writeFileSync(program.output, result);
-  } else {
-    // Simply output to console
-    process.stdout.write(result);
-    process.exit(0);
-  }
-}).catch(function(error) {
-  console.error(new Error(error));
-  process.exit(1);
-});
+raml2html
+  .render(input, config, argv)
+  .then(result => {
+    if (argv.output) {
+      fs.writeFileSync(argv.output, result);
+    } else {
+      // Simply output to console
+      process.stdout.write(result, () => {
+        process.exit(0);
+      });
+    }
+  })
+  .catch(error => {
+    if (error.message) {
+      console.error(error.message);
+    }
+    if (error.parserErrors) {
+      console.error(JSON.stringify(error.parserErrors, null, 2));
+    }
+    process.exit(1);
+  });
